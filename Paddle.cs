@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,9 +9,9 @@ namespace Labb2_ConsolePong
 {
     internal class Paddle
     {
-        int xPos;
-        int yPos;
-        int playerSize;
+        public int xPos { get; private set; }
+        public int yPos { get; private set; }
+        public int playerSize { get; private set; }
 
         public Paddle(int x, int y, int size)
         {
@@ -21,30 +22,22 @@ namespace Labb2_ConsolePong
 
         public void Move(int yAmount)
         {
+            int newYPos = yPos + yAmount;
+
+            if (newYPos >= 0 && newYPos + playerSize < Console.WindowHeight)
+            {
+                yPos = newYPos;
+            }
 
         }
 
         public void Draw()
         {
-            Console.SetCursorPosition(xPos, yPos);
-            Console.Write("|");
-
-            Console.SetCursorPosition(xPos, yPos + 1);
-            Console.Write("|");
-
-            Console.SetCursorPosition(xPos, yPos + 2);
-            Console.Write("|");
-
-
-            Console.SetCursorPosition(xPos + 110, yPos);
-            Console.Write("|");
-
-            Console.SetCursorPosition(xPos + 110, yPos + 1);
-            Console.Write("|");
-
-            Console.SetCursorPosition(xPos + 110, yPos + 2);
-            Console.Write("|");
+            for (int i = 0; i < playerSize; i++)
+            {
+                Console.SetCursorPosition(xPos, yPos + i);
+                Console.Write("|");
+            }
         }
-
     }
 }

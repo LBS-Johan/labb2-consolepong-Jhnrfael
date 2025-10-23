@@ -11,6 +11,9 @@ namespace Labb2_ConsolePong
     {
         int width;
         int height;
+        Paddle leftPaddle = new Paddle(5, 12, 5);
+        Paddle rightPaddle = new Paddle(115, 12, 5);
+        Ball ball = new Ball(60, 12);
 
         public void StartGame()
         {
@@ -18,6 +21,7 @@ namespace Labb2_ConsolePong
             width = Console.WindowWidth;
             height = Console.WindowHeight;
             Console.CursorVisible = false;
+            
 
 
         }
@@ -27,37 +31,35 @@ namespace Labb2_ConsolePong
             //Töm hela skärmen i början av varje uppdatering.
             Console.Clear();
 
-            Paddle testPaddle = new Paddle(5, 10, 1);
-            testPaddle.Draw();
+            leftPaddle.Draw();
+            rightPaddle.Draw();
+            ball.Draw();
+            ball.Move();
+            ball.CheckCollisions(leftPaddle, rightPaddle, Console.WindowWidth, Console.WindowHeight);
+
 
             if (Input.IsPressed(ConsoleKey.UpArrow))
             {
                 //Flytta spelare 1 uppåt
-                Paddle p1Paddle = new Paddle(5, 10, 1);
-                p1Paddle.Move(1);
+                rightPaddle.Move(-1);
 
             }
             if (Input.IsPressed(ConsoleKey.DownArrow))
             {
                 //Flytta spelare 1 nedåt
-                Paddle p1Paddle = new Paddle(5, 10, 1);
-                p1Paddle.Move(-1);
+                rightPaddle.Move(1);
             }
 
             if (Input.IsPressed(ConsoleKey.W))
             {
                 //Flytta spelare 2 uppåt
-                Paddle p2Paddle = new Paddle(25, 10, 1);
-                p2Paddle.Move(1);
+                leftPaddle.Move(-1);
             }
             if (Input.IsPressed(ConsoleKey.S))
             {
                 //Flytta spelare 2 nedåt
-                Paddle p2Paddle = new Paddle(25, 10, 1);
-                p2Paddle.Move(-1);
+                leftPaddle.Move(1);
             }
-
-
 
             //Return true om spelet ska fortsätta
             return true;
