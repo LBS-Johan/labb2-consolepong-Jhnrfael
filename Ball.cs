@@ -8,70 +8,72 @@ namespace Labb2_ConsolePong
 {
     internal class Ball
     {
-        int xBallPos;
-        int yBallPos;
+        int x;
+        int y;
         int xVelocity;
         int yVelocity;
 
-        public Ball(int xBallPosStart, int yBallPosStart)
+        public Ball(int startX, int startY)
         {
-            xBallPos = xBallPosStart;
-            yBallPos = yBallPosStart;
+            x = startX;
+            y = startY;
 
             Random rand = new Random();
-            xVelocity = rand.Next(0, 2) == 0 ? -1: 1;
-            yVelocity = rand.Next(0, 2) == 0 ? -1: 1;
+            xVelocity = rand.Next(0, 2) == 0 ? -1 : 1;
+            yVelocity = rand.Next(0, 2) == 0 ? -1 : 1;
         }
 
         public void Move()
         {
-            xBallPos += xVelocity;
-            yBallPos += yVelocity;
+            x += xVelocity;
+            y += yVelocity;
         }
 
         public void Draw()
         {
-            Console.SetCursorPosition(xBallPos, yBallPos);
+            Console.SetCursorPosition(x, y);
             Console.Write("O");
         }
 
         public void CheckCollisions(Paddle leftPaddle, Paddle rightPaddle, int width, int height)
         {
-
-            if (yBallPos <= 0 || yBallPos >= height - 1)
+            // Studsa på topp och botten
+            if (y <= 0 || y >= height - 1)
             {
                 yVelocity *= -1;
             }
 
-            if (xBallPos >= leftPaddle.xPos + 1 &&
-                yBallPos <= leftPaddle.yPos &&
-                yBallPos < leftPaddle.yPos + leftPaddle.playerSize)
+            // Kollision med vänster paddel
+            if (x == leftPaddle.xPos + 1 &&
+                y >= leftPaddle.yPos &&
+                y < leftPaddle.yPos + leftPaddle.playerSize)
+            {
+                xVelocity = 1;
+            }
+
+            // Kollision med höger paddel
+            if (x == rightPaddle.xPos - 1 &&
+                y >= rightPaddle.yPos &&
+                y < rightPaddle.yPos + rightPaddle.playerSize)
             {
                 xVelocity = -1;
-
-            }
-            else if (xBallPos <= rightPaddle.xPos - 1 &&
-                     yBallPos >= rightPaddle.yPos &&
-                     yBallPos > rightPaddle.yPos + rightPaddle.playerSize)
-            {
-                xVelocity = +1;
             }
 
-            if (xBallPos <= 0 || xBallPos >= width - 1)
+            // Om bollen går utanför planen → reset till mitten
+            if (x <= 0 || x >= width - 1)
             {
                 Reset(width / 2, height / 2);
             }
+        }
 
-            void Reset(int x, int y)
-            {
-                xBallPos = x;
-                yBallPos = y;
+        private void Reset(int startX, int startY)
+        {
+            x = startX;
+            y = startY;
 
-                Random rand = new Random();
-                xVelocity = rand.Next(0, 2) == 0 ? -1 : 1;
-                yVelocity = rand.Next(0, 2) == 0 ? -1 : 1;
-            }
-
+            Random rand = new Random();
+            xVelocity = rand.Next(0, 2) == 0 ? -1 : 1;
+            yVelocity = rand.Next(0, 2) == 0 ? -1 : 1;
         }
 
     }
